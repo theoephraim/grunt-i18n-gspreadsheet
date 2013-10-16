@@ -24,7 +24,8 @@ module.exports = function(grunt) {
       key_column: 'key',
       output_dir: 'locales',
       default_locale: 'en',
-      write_default_translations: true
+      write_default_translations: true,
+      sort_keys: true
     });
 
     // make this task async
@@ -103,6 +104,7 @@ module.exports = function(grunt) {
         var step = this;
         _(locales).each(function(locale){
           var file_path = output_dir + '/' + locale + '.js';
+          if ( options.sort_keys ) translations[locale] = sortObjectByKeys( translations[locale] );
           var translation_json = JSON.stringify( translations[locale], null, ' ' );
           var write_options = {
             flags: 'w+'
@@ -123,3 +125,14 @@ module.exports = function(grunt) {
   });
 
 };
+
+
+function sortObjectByKeys(map) {
+  var keys = _.sortBy(_.keys(map), function(a) { return a; });
+  var newmap = {};
+  _.each(keys, function(k) {
+      newmap[k] = map[k];
+  });
+  return newmap;
+}
+

@@ -38,29 +38,25 @@ grunt.initConfig({
 ### Options
 
 #### options.google_account
-Type: `String`
-Default value: null
+Type: `String` (required if doc is private)
 
 The google account (email) to use for authentication. This account must have read access to the spreadsheet you want to pull the translations from.
 
 #### options.google_password
-Type: `String`
-Default value: null
+Type: `String` (required if doc is private)
 
 The password for the above google account.
 
 **NOTE:** You should never commit your password into your git repo. Rather you should use an ENV variable. You can also make your spreadsheet publicly accessible (read-only) so no auth is required.
 
 #### options.document_key
-Type: `String`
-Default value: null
+Type: `String` (required)
 
 The spreadsheet key. You can get this from the URL while viewing your spreadsheet  
 *Example: `https://docs.google.com/spreadsheet/ccc?key=<THE-KEY-IS-THIS-THING>#gid=0`*
 
 #### options.key_column
-Type: `String`
-Default value: `'key'`
+Type: `String` -- Default: `'key'`
 
 The column header for the translation keys.
 
@@ -69,16 +65,21 @@ When using i18n plugins, usually one writes `__('Thing to translate')`. In your 
 **NOTE** Google spreadsheets API alters column headers slightly. It will force all lower case and remove all spaces. It is recommended to just use a column name in this format already, but if you cannot, you may need to debug a little to figure out the column name that the api is using.
 
 #### options.default_locale
-Type: `String`
-Default value: `'en'`
+Type: `String` -- Default: `'en'`
 
 A string value to signify which locale is the default - useful in conjunction with the `write_default_translations` option (below).
 
 #### options.write_default_translations
-Type: `Boolean`
-Default value: `true`
+Type: `Boolean` -- Default: `true`
 
 Whether to write default translations or not. This is useful because most of the time, the default language translation is used as the translation key. But occasionally for some longer text items, you may wish to keep the key as key instead of text. This option lets you leave the default locale column (`en` by default) blank, but the translations will still end up in your `en.js` translation file. Most i18n plugins will default to use the translation key if no translation is found, but this may be useful in some cases.
+
+#### options.sort_keys
+Type: `Boolean` -- Default: `true`
+
+Enable/disable sorting of the translation keys before writing to the file. If false, translations will appear in the same order as they do in the spreadsheet.
+
+
 
 ### Usage Examples
 
