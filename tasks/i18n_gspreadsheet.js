@@ -75,6 +75,7 @@ module.exports = function(grunt) {
         // read all translations into an object with the correct keys
         _(rows).each(function(row){
           var translation_key = row[options.key_column];
+          if ( !translation_key ) return;
           _(locales).each(function(locale){
             if ( row[locale] ){
               translations[locale][translation_key] = row[locale];
@@ -114,7 +115,7 @@ module.exports = function(grunt) {
           grunt.log.error( err );
           return done( false );
         }
-        
+
         grunt.log.writeln( 'Wrote translation files: ' + locales.toString().magenta );
         done();
       }
