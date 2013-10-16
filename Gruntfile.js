@@ -30,14 +30,13 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     i18n_gspreadsheet: {
-      custom_options: {
+      test_config: {
         options: {
           output_dir: 'tmp',
-          // this document key points to a test file -- https://docs.google.com/spreadsheet/ccc?key=0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c#gid=0
-          // it is public readable only.
+          // this document key points to the test file -- see readme for more info
           document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
         }
-      },
+      }
     },
 
     // Unit tests.

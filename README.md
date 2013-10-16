@@ -87,10 +87,12 @@ Most likely, you will just be writing a single set of locale files from a single
 ```js
 grunt.initConfig({
   i18n_gspreadsheet: {
-    options: {
-      google_account: 'my-username@google.com',
-      google_password: 'MySuperSecretPassword',
-      document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
+    my_config: {
+      options: {
+        google_account: 'my-username@google.com',
+        google_password: 'MySuperSecretPassword',
+        document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
+      }
     }
   },
 })

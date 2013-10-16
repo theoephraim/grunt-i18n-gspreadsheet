@@ -38,6 +38,7 @@ module.exports = function(grunt) {
     Step(
       function setAuth(){
         if ( options.google_account && options.google_password ){
+
           gsheet.setAuth( options.google_account, options.google_password, this );
         } else {
           this();
@@ -45,7 +46,7 @@ module.exports = function(grunt) {
       },
       function fetchSheetInfo(err){
         if ( err ){
-          grunt.log.error('Invalid google credentials for "' + options.google_username + '"');
+          grunt.log.error('Invalid google credentials for "' + options.google_account + '"');
           return done( false );
         }
         gsheet.getRows( 1, this );
