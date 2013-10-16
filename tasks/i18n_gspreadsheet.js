@@ -38,7 +38,6 @@ module.exports = function(grunt) {
     Step(
       function setAuth(){
         if ( options.google_account && options.google_password ){
-
           gsheet.setAuth( options.google_account, options.google_password, this );
         } else {
           this();
@@ -49,6 +48,7 @@ module.exports = function(grunt) {
           grunt.log.error('Invalid google credentials for "' + options.google_account + '"');
           return done( false );
         }
+        
         gsheet.getRows( 1, this );
       },
       function buildTranslationJson(err, rows){
@@ -90,6 +90,7 @@ module.exports = function(grunt) {
           grunt.log.error( err );
           return done( false );
         }
+        
         mkdirp( output_dir, this );
       },
       function writeLocaleFiles(err){
@@ -97,23 +98,23 @@ module.exports = function(grunt) {
           grunt.log.error( err );
           return done( false );
         }
+
+        var step = this;
         _(locales).each(function(locale){
+          var file_path = output_dir + '/' + locale + '.js';
           var translation_json = JSON.stringify( translations[locale], null, ' ' );
-          fs.writeFileSync( output_dir + '/' + locale + '.js', translation_json, { flags: 'w+' }, function( err ){
-            if ( err ){
-              grunt.log.error('Error creating locale file');
-            } else {
-              grunt.log.writeln( 'Created locale file -- ' + locale +'.js' );
-            }
-          });
+          var write_options = {
+            flags: 'w+'
+          }
+          fs.writeFile( file_path, translation_json, write_options, step.parallel() );
         });
-        this();
       },
       function finish(err){
-        if ( err ){ 
+        if ( err ){
           grunt.log.error( err );
           return done( false );
         }
+        
         grunt.log.writeln( 'Wrote translation files: ' + locales.toString().magenta );
         done();
       }
