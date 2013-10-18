@@ -32,6 +32,7 @@ module.exports = function(grunt) {
     i18n_gspreadsheet: {
       test_config: {
         options: {
+          key_column: 'key',
           output_dir: 'tmp',
           // this document key points to the test file -- see readme for more info
           document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'

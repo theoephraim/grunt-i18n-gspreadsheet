@@ -56,13 +56,13 @@ The spreadsheet key. You can get this from the URL while viewing your spreadshee
 *Example: `https://docs.google.com/spreadsheet/ccc?key=<THE-KEY-IS-THIS-THING>#gid=0`*
 
 #### options.key_column
-Type: `String` -- Default: `'key'`
+Type: `String`
 
-The column header for the translation keys.
+The column header for special translation keys. Some explanation:
 
-When using i18n plugins, usually one writes `__('Thing to translate')`. In your spreadsheet, one of your columns will hold all of these translation keys. This option allows you to override the name of this column.
+When using i18n plugins, usually one writes `__('Thing to translate')`. The key in this case is the thing to be translated in the default language. But sometimes for longer items of text, you may want to use a special string. For example, `__('!ABOUT.BIO')`. In your spreadsheet, you can have one column that is used to hold these special keys. This option allows you to enable this feature and set the name the column to use.
 
-**NOTE** Google spreadsheets API alters column headers slightly. It will force all lower case and remove all spaces. It is recommended to just use a column name in this format already, but if you cannot, you may need to debug a little to figure out the column name that the api is using.
+**NOTE** Google spreadsheets API alters column headers slightly. It will force all lower case and remove all spaces/special characters. For example "My Column Header!" would become "mycolumnheader". It is recommended to just use a column name in this format already, but if you cannot, you may need to debug a little to figure out the column name that the api is using.
 
 #### options.default_locale
 Type: `String` -- Default: `'en'`
@@ -70,9 +70,9 @@ Type: `String` -- Default: `'en'`
 A string value to signify which locale is the default - useful in conjunction with the `write_default_translations` option (below).
 
 #### options.write_default_translations
-Type: `Boolean` -- Default: `true`
+Type: `Boolean` -- Default: `false`
 
-Whether to write default translations or not. This is useful because most of the time, the default language translation is used as the translation key. But occasionally for some longer text items, you may wish to keep the key as key instead of text. This option lets you leave the default locale column (`en` by default) blank, but the translations will still end up in your `en.js` translation file. Most i18n plugins will default to use the translation key if no translation is found, but this may be useful in some cases.
+Whether to include default translations or not. Normally the default language translations are used as the translation keys, and most i18n plugins will display this translation key if no translation is found - making it unnecessary to have a file full of redundant pairs like `"About us": "About us"`. This option tells the plugin to write these redundant pairs to the default language file anyway. Might be useful for someone.
 
 #### options.sort_keys
 Type: `Boolean` -- Default: `true`

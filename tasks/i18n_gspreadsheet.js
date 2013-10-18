@@ -17,11 +17,21 @@ var path = require('path');
 
 module.exports = function(grunt) {
 
+
+  function sortObjectByKeys(map) {
+    var keys = _.sortBy(_.keys(map), function(a) { return a; });
+    var newmap = {};
+    _.each(keys, function(k) {
+        newmap[k] = map[k];
+    });
+    return newmap;
+  }
+
+
   grunt.registerMultiTask('i18n_gspreadsheet', 'Grunt plugin to generate i18n locale files from a google spreadsheet', function() {
 
     // default options
     var options = this.options({
-      key_column: 'key',
       output_dir: 'locales',
       default_locale: 'en',
       write_default_translations: true,
@@ -75,13 +85,19 @@ module.exports = function(grunt) {
 
         // read all translations into an object with the correct keys
         _(rows).each(function(row){
-          var translation_key = row[options.key_column];
+          // if an key override column is set, check that first, then use the default locale
+          
+          var use_key_override = options.key_column && row[options.key_column];
+          var translation_key = use_key_override ? row[options.key_column] : row[options.default_locale];
           if ( !translation_key ) return;
           _(locales).each(function(locale){
-            if ( row[locale] ){
+
+            if ( locale == options.default_locale ){
+              if ( use_key_override || options.write_default_translations ){
+                translations[locale][translation_key] = row[locale];
+              }
+            } else if ( row[locale] ) {
               translations[locale][translation_key] = row[locale];
-            } else if ( locale == options.default_locale && options.write_default_translations ){
-              translations[locale][translation_key] = translation_key;
             }
           });
         });
@@ -108,7 +124,7 @@ module.exports = function(grunt) {
           var translation_json = JSON.stringify( translations[locale], null, ' ' );
           var write_options = {
             flags: 'w+'
-          }
+          };
           fs.writeFile( file_path, translation_json, write_options, step.parallel() );
         });
       },
@@ -125,14 +141,3 @@ module.exports = function(grunt) {
   });
 
 };
-
-
-function sortObjectByKeys(map) {
-  var keys = _.sortBy(_.keys(map), function(a) { return a; });
-  var newmap = {};
-  _.each(keys, function(k) {
-      newmap[k] = map[k];
-  });
-  return newmap;
-}
-

@@ -20,7 +20,7 @@ exports.i18n_gspreadsheet = {
     test.expect( test_locales.length );
     _(test_locales).each(function(locale){
       var translations = JSON.parse( grunt.file.read('tmp/'+locale+'.js') );
-      test.equal( translations.test, locale, locale+'.js file should have correct translation from google doc');
+      test.equal( translations['!test'], locale, locale+'.js file should have correct translation from google doc');
     });
     test.done();
   },
