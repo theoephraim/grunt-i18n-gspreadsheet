@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 
 
   function sortObjectByKeys(map) {
-    var keys = _.sortBy(_.keys(map), function(a) { return a; });
+    var keys = _.sortBy(_.keys(map), function(a) { return a.toLowerCase(); });
     var newmap = {};
     _.each(keys, function(k) {
         newmap[k] = map[k];
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
     var options = this.options({
       output_dir: 'locales',
       default_locale: 'en',
-      write_default_translations: true,
+      write_default_translations: false,
       sort_keys: true
     });
 
