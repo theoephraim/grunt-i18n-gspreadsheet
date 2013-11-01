@@ -1,23 +1,23 @@
 {
-  "name": "grunt-i18n-gspreadsheet",
+  "name": "grunt-i18n-spreadsheet",
   "description": "Grunt plugin to generate i18n locale files from a google spreadsheet",
   "version": "0.1.5",
-  "homepage": "https://github.com/theoephraim/grunt-i18n-gspreadsheet",
+  "homepage": "https://github.com/theoephraim/grunt-i18n-spreadsheet",
   "author": {
     "name": "Theo Ephraim",
     "email": "theo@busbud.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/theoephraim/grunt-i18n-gspreadsheet.git"
+    "url": "git://github.com/theoephraim/grunt-i18n-spreadsheet.git"
   },
   "bugs": {
-    "url": "https://github.com/theoephraim/grunt-i18n-gspreadsheet/issues"
+    "url": "https://github.com/theoephraim/grunt-i18n-spreadsheet/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/theoephraim/grunt-i18n-gspreadsheet/blob/master/LICENSE-MIT"
+      "url": "https://github.com/theoephraim/grunt-i18n-spreadsheet/blob/master/LICENSE-MIT"
     }
   ],
   "main": "Gruntfile.js",
@@ -31,18 +31,27 @@
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-clean": "~0.4.0",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.1"
+    "grunt": "~0.4.1",
+    "grunt-contrib-connect": "~0.5.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin", "grunt", "i18n", "google", "spreadsheet", "gdocs", "locale"
+    "gruntplugin",
+    "grunt",
+    "i18n",
+    "google",
+    "spreadsheet",
+    "gdocs",
+    "locale"
   ],
   "dependencies": {
     "google-spreadsheet": "~0.2.5",
     "step": "0.0.5",
     "underscore": "~1.5.2",
-    "mkdirp": "~0.3.5"
+    "mkdirp": "~0.3.5",
+    "request": "~2.27.0",
+    "csv": "~0.3.6"
   }
 }

@@ -1,4 +1,4 @@
-# grunt-i18n-gspreadsheet
+# grunt-i18n-spreadsheet
 
 > Grunt plugin to generate i18n locale files from a google spreadsheet
 
@@ -8,23 +8,23 @@ This plugin requires Grunt `~0.4.1`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-i18n-gspreadsheet --save-dev
+npm install grunt-i18n-spreadsheet --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('grunt-i18n-gspreadsheet');
+grunt.loadNpmTasks('grunt-i18n-spreadsheet');
 ```
 
-## The "i18n_gspreadsheet" task
+## The "i18n_spreadsheet" task
 
 ### Overview
-In your project's Gruntfile, add a section named `i18n_gspreadsheet` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `i18n_spreadsheet` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  i18n_gspreadsheet: {
+  i18n_spreadsheet: {
     options: {
       // Task-specific options go here.
     },
@@ -87,12 +87,14 @@ Most likely, you will just be writing a single set of locale files from a single
 
 ```js
 grunt.initConfig({
-  i18n_gspreadsheet: {
+  i18n_spreadsheet: {
     my_config: {
       options: {
-        google_account: 'my-username@google.com',
-        google_password: 'MySuperSecretPassword',
-        document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
+        google_docs: {
+          google_account: 'my-username@google.com',
+          google_password: 'MySuperSecretPassword',
+          document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
+        }
       }
     }
   },

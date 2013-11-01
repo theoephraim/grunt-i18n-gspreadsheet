@@ -1,0 +1,9 @@
+key,en,fr,es,comments
+!test,en,fr,es,Must be the same as locale -- used for testing
+,hello,bonjour,hola,default (en) is empty for testing
+,goodbye,Au revoir,Adios,
+!newlineTest1,"This item
+has a newline in it.",,,
+!newlineTest2,"This item
+
+has 2 newlines in it.",,,
