@@ -1,7 +1,7 @@
 {
   "name": "grunt-i18n-gspreadsheet",
   "description": "Grunt plugin to generate i18n locale files from a google spreadsheet",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "homepage": "https://github.com/theoephraim/grunt-i18n-gspreadsheet",
   "author": {
     "name": "Theo Ephraim",
