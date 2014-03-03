@@ -33,6 +33,7 @@ module.exports = function(grunt) {
     // default options
     var options = this.options({
       output_dir: 'locales',
+      ext: '.js',
       default_locale: 'en',
       write_default_translations: false,
       sort_keys: true
@@ -119,7 +120,7 @@ module.exports = function(grunt) {
 
         var step = this;
         _(locales).each(function(locale){
-          var file_path = output_dir + '/' + locale + '.js';
+          var file_path = output_dir + '/' + locale + options.ext;
           if ( options.sort_keys ) translations[locale] = sortObjectByKeys( translations[locale] );
           var translation_json = JSON.stringify( translations[locale], null, ' ' );
           var write_options = {
