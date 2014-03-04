@@ -134,6 +134,7 @@ module.exports = function(grunt) {
           return done( false );
         }
 
+        grunt.config(['i18n_gspreadsheet','data','locales'], locales);
         grunt.log.writeln( 'Wrote translation files: ' + locales.toString().magenta );
         done();
       }
