@@ -34,6 +34,7 @@ module.exports = function(grunt) {
     var options = this.options({
       output_dir: 'locales',
       default_locale: 'en',
+      use_default_on_missing: false,
       write_default_translations: false,
       sort_keys: true
     });
@@ -98,6 +99,8 @@ module.exports = function(grunt) {
               }
             } else if ( row[locale] ) {
               translations[locale][translation_key] = row[locale];
+            } else if ( options.use_default_on_missing ){
+              translations[locale][translation_key] = row[options.default_locale];
             }
           });
         });
