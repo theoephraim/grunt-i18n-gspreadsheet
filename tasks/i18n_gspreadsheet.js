@@ -37,7 +37,8 @@ module.exports = function(grunt) {
       default_locale: 'en',
       use_default_on_missing: false,
       write_default_translations: false,
-      sort_keys: true
+      sort_keys: true,
+      worksheet: 1
     });
 
     // make this task async
@@ -62,7 +63,7 @@ module.exports = function(grunt) {
           return done( false );
         }
         
-        gsheet.getRows( 1, this );
+        gsheet.getRows( options.worksheet, this );
       },
       function buildTranslationJson(err, rows){
         if ( err ){
