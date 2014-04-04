@@ -14,6 +14,7 @@ var _ = require('underscore');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
+var prompt = require('prompt');
 
 module.exports = function(grunt) {
 
@@ -22,7 +23,7 @@ module.exports = function(grunt) {
     var keys = _.sortBy(_.keys(map), function(a) { return a.toLowerCase(); });
     var newmap = {};
     _.each(keys, function(k) {
-        newmap[k] = map[k];
+      newmap[k] = map[k];
     });
     return newmap;
   }
@@ -42,7 +43,7 @@ module.exports = function(grunt) {
 
     // make this task async
     var done = this.async();
-    
+
     var locales = [];
     var translations = {};
     var gsheet = new GoogleSpreadsheet( options.document_key );
@@ -50,8 +51,31 @@ module.exports = function(grunt) {
 
     Step(
       function setAuth(){
+        var step = this;
         if ( options.google_account && options.google_password ){
           gsheet.setAuth( options.google_account, options.google_password, this );
+        } else if (options.require_auth) {
+          prompt.start();
+          prompt.get({
+            properties: {
+              account: {
+                description: 'Enter your google account name (username)',
+                required: true
+              },
+              password: {
+                description: 'Enter your google account password (hidden)',
+                required: true,
+                hidden: true
+              }
+            }
+          }, function(err, result) {
+            if (err) {
+              grunt.log.error(err);
+              return done(false);
+            }
+
+            gsheet.setAuth(result.account, result.password, step);
+          });
         } else {
           this();
         }
@@ -61,7 +85,7 @@ module.exports = function(grunt) {
           grunt.log.error('Invalid google credentials for "' + options.google_account + '"');
           return done( false );
         }
-        
+
         gsheet.getRows( 1, this );
       },
       function buildTranslationJson(err, rows){
@@ -88,7 +112,7 @@ module.exports = function(grunt) {
         // read all translations into an object with the correct keys
         _(rows).each(function(row){
           // if an key override column is set, check that first, then use the default locale
-          
+
           var use_key_override = options.key_column && row[options.key_column];
           var translation_key = use_key_override ? row[options.key_column] : row[options.default_locale];
           if ( !translation_key ) return;
@@ -112,7 +136,7 @@ module.exports = function(grunt) {
           grunt.log.error( err );
           return done( false );
         }
-        
+
         mkdirp( output_dir, this );
       },
       function writeLocaleFiles(err){
