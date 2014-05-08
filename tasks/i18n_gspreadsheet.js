@@ -39,6 +39,11 @@ module.exports = function(grunt) {
       write_default_translations: false,
       sort_keys: true
     });
+    
+    var regex_filter = grunt.option('regex-filter');
+    if (regex_filter) {
+      regex_filter = new RegExp(regex_filter);
+    }
 
     // make this task async
     var done = this.async();
@@ -80,6 +85,12 @@ module.exports = function(grunt) {
           if ( locale != 'id' && locale.length == 2 ){
             locales.push( locale );
             translations[locale] = {};
+            if (regex_filter) {
+              try {
+                translations[locale] = JSON.parse(fs.readFileSync(output_dir + '/' + locale + options.ext));
+              }
+              catch (e) {}
+            }
           }
         });
 
@@ -92,6 +103,7 @@ module.exports = function(grunt) {
           var use_key_override = options.key_column && row[options.key_column];
           var translation_key = use_key_override ? row[options.key_column] : row[options.default_locale];
           if ( !translation_key ) return;
+          if (regex_filter && !regex_filter.test(translation_key)) return;
           _(locales).each(function(locale){
 
             if ( locale == options.default_locale ){
