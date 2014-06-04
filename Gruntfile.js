@@ -35,7 +35,8 @@ module.exports = function(grunt) {
           key_column: 'key',
           output_dir: 'tmp',
           // this document key points to the test file -- see readme for more info
-          document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c'
+          document_key: '0Araic6gTol6SdEtwb1Badl92c2tlek45OUxJZDlyN2c',
+          write_default_translations: true
         }
       }
     },

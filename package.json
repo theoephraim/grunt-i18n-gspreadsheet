@@ -37,7 +37,7 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin", "grunt", "i18n", "google", "spreadsheet", "gdocs", "locale"
+    "gruntplugin", "grunt", "i18n", "google", "spreadsheet", "gdocs", "locale", "translation"
   ],
   "dependencies": {
     "google-spreadsheet": "~0.2.6",

@@ -59,7 +59,7 @@ module.exports = function(grunt) {
         var step = this;
         if ( options.google_account && options.google_password ){
           gsheet.setAuth( options.google_account, options.google_password, this );
-        } else if (options.require_auth) {
+        } else if (options.prompt_auth) {
           prompt.start();
           prompt.get({
             properties: {

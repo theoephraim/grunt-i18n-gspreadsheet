@@ -35,19 +35,26 @@ grunt.initConfig({
 })
 ```
 
-### Options
+### Gruntfile Options
+
+**NOTE:** Auth is required if your spreadsheet is private. You can either set up auth in your Gruntfile or use a command line prompt.
 
 #### options.google_account
-Type: `String` (required if doc is private)
+Type: `String` (optional)
 
 The google account (email) to use for authentication. This account must have read access to the spreadsheet you want to pull the translations from.
 
 #### options.google_password
-Type: `String` (required if doc is private)
+Type: `String` (optional)
 
 The password for the above google account.
 
 **NOTE:** You should never commit your password into your git repo. Rather you should use an ENV variable. You can also make your spreadsheet publicly accessible (read-only) so no auth is required.
+
+#### options.prompt_auth
+Type: `Boolean` -- Default: `false`
+
+Set to true to prompt for username and password instead of using `options.google_account` and `options.google_password`
 
 #### options.document_key
 Type: `String` (required)
@@ -79,7 +86,15 @@ Type: `Boolean` -- Default: `true`
 
 Enable/disable sorting of the translation keys before writing to the file. If false, translations will appear in the same order as they do in the spreadsheet.
 
+### Command Line Options
 
+#### --regex-filter
+
+You can set a regex filter if you want to update just a subset of your translation keys. For example:
+
+`grunt i18n_gspreadsheet --regex-filter='^!About\.'`
+
+This would only update the translations which have keys that start with "!About."
 
 ### Usage Examples
 
@@ -98,6 +113,13 @@ grunt.initConfig({
   },
 })
 ```
+
+**TIP:** It is convenient to create a shorter alias to the task if you are running it often. For example:
+
+```
+grunt.registerTask('i18n', ['i18n_gspreadsheet']);   // shorter alias to regenerate locale files
+```
+
 
 ### Spreadsheet Format
 
