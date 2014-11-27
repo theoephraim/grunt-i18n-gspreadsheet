@@ -38,9 +38,13 @@ module.exports = function(grunt) {
       default_locale: 'en',
       use_default_on_missing: false,
       write_default_translations: false,
-      sort_keys: true
+      sort_keys: true,
+      use_all_worksheets: false,
+      worksheet_id: 1,
+      use_worksheet_namespacing: false,
+      prevent_conflicts: true
     });
-    
+
     var regex_filter = grunt.option('regex-filter');
     if (regex_filter) {
       regex_filter = new RegExp(regex_filter);
@@ -51,6 +55,7 @@ module.exports = function(grunt) {
 
     var locales = [];
     var translations = {};
+    var worksheets = {};
     var gsheet = new GoogleSpreadsheet( options.document_key );
     var output_dir = path.resolve( process.cwd() + '/' + options.output_dir );
 
@@ -90,57 +95,95 @@ module.exports = function(grunt) {
           grunt.log.error('Invalid google credentials for "' + options.google_account + '"');
           return done( false );
         }
-
-        gsheet.getRows( 1, this );
+        gsheet.getInfo( this );
       },
-      function buildTranslationJson(err, rows){
+      function fetchRowData(err, info){
+        if ( err ){
+          grunt.log.error('Error getting sheet info');
+          return done( false );
+        }
+        worksheets = info.worksheets;
+        grunt.log.writeln( 'Found ' + worksheets.length + ' worksheets');
+        var group = this.group();
+        if ( options.use_all_worksheets ) {
+          // Get rows from all worksheets
+          for( var i=1; i <= worksheets.length; i++){
+            gsheet.getRows( i, group() );
+          }
+        } else {
+          gsheet.getRows( options.worksheet_id, group() );
+        }
+      },
+      function buildTranslationJson(err, sheets){
         if ( err ){
           grunt.log.error( err );
           return done( false );
         }
-        if ( rows.length === 0 ){
-          grunt.log.error('ERROR: no translations found in sheet');
-          return done( false );
-        }
-
-        // First determine which locales are supported
-        var gsheet_keys = _(rows[0]).keys();
-        _(gsheet_keys).each(function(locale){
-          if ( locale != 'id' && locale.length == 2 ){
-            locales.push( locale );
-            translations[locale] = {};
-            if (regex_filter) {
-              try {
-                translations[locale] = JSON.parse(fs.readFileSync(output_dir + '/' + locale + options.ext));
-              }
-              catch (e) {}
-            }
+        sheets.forEach(function(rows, ind, arr){
+          var sheetTitle = '';
+          if ( options.use_all_worksheets ) {
+            sheetTitle = worksheets[ind].title;
+          } else {
+            sheetTitle = worksheets[options.worksheet_id - 1].title;
           }
-        });
+          grunt.log.writeln('Processing worksheet: ' + sheetTitle);
+          if ( rows.length === 0 ){
+            grunt.log.error('ERROR: no translations found in sheet');
+            grunt.log.error(rows);
+            return done( false );
+          }
 
-        grunt.log.writeln( 'Found '+ rows.length.toString().cyan +' translations in ' + locales.length.toString().cyan + ' languages' );
-
-        // read all translations into an object with the correct keys
-        _(rows).each(function(row){
-          // if an key override column is set, check that first, then use the default locale
-
-          var use_key_override = options.key_column && row[options.key_column];
-          var translation_key = use_key_override ? row[options.key_column] : row[options.default_locale];
-          if ( !translation_key ) return;
-          if (regex_filter && !regex_filter.test(translation_key)) return;
-          _(locales).each(function(locale){
-
-            if ( locale == options.default_locale ){
-              if ( use_key_override || options.write_default_translations ){
-                translations[locale][translation_key] = row[locale];
+          // First determine which locales are supported
+          var gsheet_keys = _(rows[0]).keys();
+          _(gsheet_keys).each(function(locale){
+            if ( locale != 'id' && locale.length == 2 ){
+              if(locales.indexOf(locale) == -1) {
+                locales.push( locale );
+                translations[locale] = {};
               }
-            } else if ( row[locale] ) {
-              translations[locale][translation_key] = row[locale];
-            } else if ( options.use_default_on_missing ){
-              translations[locale][translation_key] = row[options.default_locale];
+              if (regex_filter) {
+                try {
+                  translations[locale] = JSON.parse(fs.readFileSync(output_dir + '/' + locale + options.ext));
+                }
+                catch (e) {}
+              }
             }
           });
+
+          grunt.log.writeln( 'Found '+ rows.length.toString().cyan +' translations in ' + locales.length.toString().cyan + ' languages' );
+
+          // read all translations into an object with the correct keys
+          _(rows).each(function(row){
+            // if an key override column is set, check that first, then use the default locale
+
+            var use_key_override = options.key_column && row[options.key_column];
+            var translation_key = use_key_override ? row[options.key_column] : row[options.default_locale];
+            if ( !translation_key ) return;
+            if (regex_filter && !regex_filter.test(translation_key)) return;
+
+            if(options.use_worksheet_namespacing){
+              translation_key = sheetTitle + '-' + translation_key;
+            }
+
+            _(locales).each(function(locale){
+              if( options.prevent_conflicts && translations[locale][translation_key]){
+                grunt.log.error('ERROR: duplicated / conflicting content found in ' + sheetTitle + ': ' + locale + ' - ' + translation_key);
+                return done( false );
+              }
+
+              if ( locale == options.default_locale ){
+                if ( use_key_override || options.write_default_translations ){
+                  translations[locale][translation_key] = row[locale];
+                }
+              } else if ( row[locale] ) {
+                translations[locale][translation_key] = row[locale];
+              } else if ( options.use_default_on_missing ){
+                translations[locale][translation_key] = row[options.default_locale];
+              }
+            });
+          });
         });
+
         this();
       },
       function ensureDirectoryExists(err){
