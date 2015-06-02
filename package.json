@@ -28,16 +28,23 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.0",
+    "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.4.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt": "~0.4.1"
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin", "grunt", "i18n", "google", "spreadsheet", "gdocs", "locale", "translation"
+    "gruntplugin",
+    "grunt",
+    "i18n",
+    "google",
+    "spreadsheet",
+    "gdocs",
+    "locale",
+    "translation"
   ],
   "dependencies": {
     "google-spreadsheet": "~0.2.6",
