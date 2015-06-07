@@ -59,7 +59,7 @@ Set to true to prompt for username and password instead of using `options.google
 #### options.document_key
 Type: `String` (required)
 
-The spreadsheet key. You can get this from the URL while viewing your spreadsheet  
+The spreadsheet key. You can get this from the URL while viewing your spreadsheet
 *Example: `https://docs.google.com/spreadsheet/ccc?key=<THE-KEY-IS-THIS-THING>#gid=0`*
 
 #### options.key_column
@@ -85,6 +85,28 @@ Whether to include default translations or not. Normally the default language tr
 Type: `Boolean` -- Default: `true`
 
 Enable/disable sorting of the translation keys before writing to the file. If false, translations will appear in the same order as they do in the spreadsheet.
+
+#### options.use_all_worksheets
+Type: `Boolean` -- Default: `false`
+
+Set to true to parse all worksheets. This allows you to break up your localisation spreadsheet into more manageable worksheets if you have a lot of content and/or locales.
+
+#### options.worksheet_id: 1,
+Type: `Integer` -- Default: `1`
+
+An integer value to signify which worksheet to use  - this will be ignored if the `use_all_worksheets` option (above) is set to `true`.
+
+**NOTE** the worksheet index starts from 1, not 0.
+
+#### options.use_worksheet_namespacing
+Type: `Boolean` -- Default: `false`
+
+Set to true to prefix all translation keys with the name of the selected worksheet. `"About us": "About us"` from `Sheet1` would become `"Sheet1-About us": "About us"`
+
+#### options.prevent_conflicts
+Type: `Boolean` -- Default: `true`
+
+Set to true to throw an error if any duplicate translation keys are encountered for any locale. This is useful if the `use_all_worksheets` option (above) is set to `true` and the `use_worksheet_namespacing` option (above) is set to `false` and you inadvertently duplicate translateion keys in different worksheets.
 
 ### Command Line Options
 
