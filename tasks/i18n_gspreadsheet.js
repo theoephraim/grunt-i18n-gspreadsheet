@@ -55,9 +55,7 @@ module.exports = function(grunt) {
 
     Step(
       function setAuth(){
-        var step = this;
-        
-        my_sheet.useServiceAccountAuth(options, this);
+        gsheet.useServiceAccountAuth(options, this);
       },
       function fetchSheetInfo(err){
         if ( err ){
