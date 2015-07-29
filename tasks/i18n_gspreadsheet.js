@@ -14,7 +14,6 @@ var _ = require('underscore');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
-var prompt = require('prompt');
 
 module.exports = function(grunt) {
 
