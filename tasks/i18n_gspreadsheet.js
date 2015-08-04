@@ -14,7 +14,6 @@ var _ = require('underscore');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var path = require('path');
-var prompt = require('prompt');
 
 module.exports = function(grunt) {
 
@@ -56,38 +55,11 @@ module.exports = function(grunt) {
 
     Step(
       function setAuth(){
-        var step = this;
-        if ( options.google_account && options.google_password ){
-          gsheet.setAuth( options.google_account, options.google_password, this );
-        } else if (options.prompt_auth) {
-          prompt.start();
-          prompt.get({
-            properties: {
-              account: {
-                description: 'Enter your google account name (username)',
-                required: true
-              },
-              password: {
-                description: 'Enter your google account password (hidden)',
-                required: true,
-                hidden: true
-              }
-            }
-          }, function(err, result) {
-            if (err) {
-              grunt.log.error(err);
-              return done(false);
-            }
-
-            gsheet.setAuth(result.account, result.password, step);
-          });
-        } else {
-          this();
-        }
+        gsheet.useServiceAccountAuth(options, this);
       },
       function fetchSheetInfo(err){
         if ( err ){
-          grunt.log.error('Invalid google credentials for "' + options.google_account + '"');
+          grunt.log.error('Invalid google credentials');
           return done( false );
         }
 
