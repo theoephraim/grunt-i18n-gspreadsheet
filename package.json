@@ -34,10 +34,17 @@
     "grunt": "~0.4.1"
   },
   "peerDependencies": {
-    "grunt": "~0.4.1"
+    "grunt": ">=0.4.0"
   },
   "keywords": [
-    "gruntplugin", "grunt", "i18n", "google", "spreadsheet", "gdocs", "locale", "translation"
+    "gruntplugin",
+    "grunt",
+    "i18n",
+    "google",
+    "spreadsheet",
+    "gdocs",
+    "locale",
+    "translation"
   ],
   "dependencies": {
     "google-spreadsheet": "~0.2.6",
